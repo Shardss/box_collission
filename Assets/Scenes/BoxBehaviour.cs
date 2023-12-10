@@ -23,19 +23,42 @@ public class BoxBehaviour : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    /*
+    
     // Update is called once per frame
     void Update()
     {
-        
-    }
-    */
+       /* Vector3 totalMovement = Vector3.zero;
 
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    bool isJumping = false;
+        if (Input.GetKey(KeyCode.W))
+        {
+            totalMovement += transform.forward;
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            totalMovement -= transform.right;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            totalMovement -= transform.forward;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            totalMovement += transform.right;
+        }
+        if (Input.GetKey(KeyCode.Space))
+        {
+            totalMovement += transform.forward;
+        }*/
 
-    void OnGUI()
-    {
+        //Store user input as a movement vector
+        Vector3 m_Input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+
+        //Apply the movement vector to the current position, which is
+        //multiplied by deltaTime and speed for a smooth MovePosition
+        rb.MovePosition(transform.position + m_Input * Time.deltaTime * 5f);
+
+        // ===============
+        /*
         Event e = Event.current;
         if (e.isKey)
         {
@@ -62,7 +85,7 @@ public class BoxBehaviour : MonoBehaviour
                     //transform.Translate(0.03f, 0, 0);
                     break;
                 case "Space":
-                    if(!isJumping)
+                    if (!isJumping)
                     {
                         //transform.Translate(0, 0.03f, 0);
                         rb.velocity = new Vector3(0, 5, 0);
@@ -78,14 +101,23 @@ public class BoxBehaviour : MonoBehaviour
 
         float tmpDist = GetComponent<Collider>().bounds.extents.y;
 
-        if (isJumping && (tmpDist - distToGround >=0))
+        if (isJumping && (tmpDist - distToGround >= 0))
         {
             Debug.Log("Landed! ");
             isJumping = false;
         }
+*/
 
-            
         //Debug.Log("Dist to ground: " + tmpDist);
+    }
+
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    bool isJumping = false;
+
+    void OnGUI()
+    {
+        
     }
 
     void OnCollisionEnter(Collision other)
