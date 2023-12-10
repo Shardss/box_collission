@@ -16,7 +16,7 @@ public class BoxBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(SimpleReturnFunc());
+        //Debug.Log(SimpleReturnFunc());
 
         // get the distance to ground
         distToGround = GetComponent<Collider>().bounds.extents.y;
@@ -45,52 +45,60 @@ public class BoxBehaviour : MonoBehaviour
             switch (e.keyCode.ToString())
             {
                 case "W":
-                    transform.Translate(0, 0, 0.03f);
+                    //rb.AddForce(new Vector3(0, 0.1f, 0.5f), ForceMode.Acceleration);
+                    rb.velocity = new Vector3(0, 0, 3);
+                    //transform.Translate(0, 0, 0.03f);
                     break;
                 case "A":
-                    transform.Translate(-0.03f, 0, 0);
+                    rb.velocity = new Vector3(-3, 0, 0);
+                    //transform.Translate(-0.03f, 0, 0);
                     break;
                 case "S":
-                    transform.Translate(0, 0, -0.03f);
+                    rb.velocity = new Vector3(0, 0, -3);
+                    //transform.Translate(0, 0, -0.03f);
                     break;
                 case "D":
-                    transform.Translate(0.03f, 0, 0);
+                    rb.velocity = new Vector3(3, 0, 0);
+                    //transform.Translate(0.03f, 0, 0);
                     break;
                 case "Space":
                     if(!isJumping)
                     {
                         //transform.Translate(0, 0.03f, 0);
-                        rb.velocity = new Vector3(0, 10, 0);
+                        rb.velocity = new Vector3(0, 5, 0);
                         Debug.Log("JUUUUUUUUUUUUMP! ");
                         isJumping = true;
                     }
                     break;
                 default:
-                    Debug.Log("Lala! ");
+                    //Debug.Log("Lala! ");
                     break;
             }
         }
 
         float tmpDist = GetComponent<Collider>().bounds.extents.y;
 
-        if (!isJumping && (tmpDist - distToGround >=0))
+        if (isJumping && (tmpDist - distToGround >=0))
         {
             Debug.Log("Landed! ");
             isJumping = false;
         }
 
             
-        Debug.Log("Dist to ground: " + tmpDist);
+        //Debug.Log("Dist to ground: " + tmpDist);
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision other)
     {
         if(other.gameObject.tag == "Enemy")
         {
+            var enemyRenderer = other.gameObject.GetComponent<Renderer>();
+            enemyRenderer.material.color = Color.red;
             print("Enter");
         }
     }
 
+/*
     void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
@@ -106,4 +114,6 @@ public class BoxBehaviour : MonoBehaviour
             print("Exit");
         }
     }
+*/
+
 }
