@@ -1,32 +1,19 @@
 {
-    "windows": {
-        "options": {
-            "shell": {
-                "executable": "cmd.exe",
-                "args": [
-                    "/C",
-                    "\"C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/Tools/VsDevCmd.bat\"",
-                    "&&"
-                ]
-            }
-        }
-    },
     "tasks": [
         {
-            "type": "cppbuild",
+            "type": "shell",
             "label": "C/C++: g++.exe build active file",
-            "command": "C:\\msys64\\mingw64\\bin\\g++.exe",
+            "command": "g++",
             "args": [
-                "-fdiagnostics-color=always",
-                "-g",
-                "${file}",
-                // "-I./include/SDL2",
-                // "-L./lib",
+                "-Iinclude",
+                "-Llib",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "${fileBasenameNoExtension}",
+                "${fileDirname}\\*.cpp",
                 "-lmingw32",
-                // "-lSDL2main",
-                // "-lSDL2",
+                "-lSDL2main",
+                "-lSDL2",
+                "-llibSDL2_image",
             ],
             "options": {
                 "cwd": "${fileDirname}"
