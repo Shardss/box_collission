@@ -121,24 +121,23 @@ void checkCollission()
 		
 		printf("Cube[%d] min & max X, Y, Z: \t%d %d | %d %d | %d %d \n", i, minMaxX[0], minMaxX[1], minMaxY[0], minMaxY[1], minMaxZ[0], minMaxZ[1]);
 
-		// we do this double check since in the future one object might be bigger than the other
+		
 		// X axis check
-		if(((minMaxPlayerX[0] >= minMaxX[0]) && (minMaxPlayerX[0] <= minMaxX[1]) || (minMaxPlayerX[1] >= minMaxX[0]) && (minMaxPlayerX[1] <= minMaxX[1]))		// check if player's min or max X is inside cube
-		|| ((minMaxX[0] >= minMaxPlayerX[0]) && (minMaxX[0] <= minMaxPlayerX[1]) || (minMaxX[1] >= minMaxPlayerX[0]) && (minMaxX[1] <= minMaxPlayerX[1])))		// check if cube's min or max X is inside player
+		
+		if((minMaxPlayerX[0] <= minMaxX[1]) && (minMaxPlayerX[1] >= minMaxX[0]))
 		{
 			printf("X collission on cube[%d]. \n", i);
 		}
 
 		// Y axis check
-		if(((minMaxPlayerY[0] >= minMaxY[0]) && (minMaxPlayerY[0] <= minMaxY[1]) || (minMaxPlayerY[1] >= minMaxY[0]) && (minMaxPlayerY[1] <= minMaxY[1]))		// check if player's min or max X is inside cube
-		|| ((minMaxY[0] >= minMaxPlayerY[0]) && (minMaxY[0] <= minMaxPlayerY[1]) || (minMaxY[1] >= minMaxPlayerY[0]) && (minMaxY[1] <= minMaxPlayerY[1])))		// check if cube's min or max X is inside player
+		
+		if((minMaxPlayerY[0] <= minMaxY[1]) && (minMaxPlayerY[1] >= minMaxY[0]))
 		{
 			printf("Y collission on cube[%d]. \n", i);
 		}
 
 		// Z axis check
-		if(((minMaxPlayerZ[0] >= minMaxZ[0]) && (minMaxPlayerZ[0] < minMaxZ[1]) || (minMaxPlayerZ[1] >= minMaxZ[0]) && (minMaxPlayerZ[1] <= minMaxZ[1]))		// check if player's min or max X is inside cube
-		|| ((minMaxZ[0] >= minMaxPlayerZ[0]) && (minMaxZ[0] < minMaxPlayerZ[1]) || (minMaxZ[1] >= minMaxPlayerZ[0]) && (minMaxZ[1] <= minMaxPlayerZ[1])))		// check if cube's min or max X is inside player
+		if((minMaxPlayerZ[0] <= minMaxZ[1]) && (minMaxPlayerZ[1] >= minMaxZ[0]))
 		{
 			printf("Z collission on cube[%d]. \n", i);
 		}
