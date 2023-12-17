@@ -32,6 +32,8 @@ float output[8][3];
 float deltaX, deltaY;
 float sx,sy,sz;
 float angle;
+float angleX = 0.0f;
+float angleY = 0.0f;
 bool firstPositioning=true;
 GL_Cube cubes[4];
 
@@ -111,38 +113,47 @@ void checkCollission()
 	minMaxPlayerZ = cubes[0].getMinMaxZ();
 
 	printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n");
-	printf("Player min & max X, Y, Z:   \t%d %d | %d %d | %d %d \n", minMaxPlayerX[0], minMaxPlayerX[1], minMaxPlayerY[0], minMaxPlayerY[1], minMaxPlayerZ[0], minMaxPlayerZ[1]);
+	// printf("Player min & max X, Y, Z:   \t%d %d | %d %d | %d %d \n", minMaxPlayerX[0], minMaxPlayerX[1], minMaxPlayerY[0], minMaxPlayerY[1], minMaxPlayerZ[0], minMaxPlayerZ[1]);
 
 	for(int i=1; i < sizeof(cubes)/ sizeof(cubes[0]); i++)
 	{
+		int collCounter=0;
+
 		minMaxX = cubes[i].getMinMaxX();
 		minMaxY = cubes[i].getMinMaxY();
 		minMaxZ = cubes[i].getMinMaxZ();
 		
-		printf("Cube[%d] min & max X, Y, Z: \t%d %d | %d %d | %d %d \n", i, minMaxX[0], minMaxX[1], minMaxY[0], minMaxY[1], minMaxZ[0], minMaxZ[1]);
+		// printf("Cube[%d] min & max X, Y, Z: \t%d %d | %d %d | %d %d \n", i, minMaxX[0], minMaxX[1], minMaxY[0], minMaxY[1], minMaxZ[0], minMaxZ[1]);
 
 		
 		// X axis check
-		
 		if((minMaxPlayerX[0] <= minMaxX[1]) && (minMaxPlayerX[1] >= minMaxX[0]))
 		{
-			printf("X collission on cube[%d]. \n", i);
+			// printf("X collission on cube[%d]. \n", i);
+			collCounter++;
 		}
 
 		// Y axis check
-		
 		if((minMaxPlayerY[0] <= minMaxY[1]) && (minMaxPlayerY[1] >= minMaxY[0]))
 		{
-			printf("Y collission on cube[%d]. \n", i);
+			// printf("Y collission on cube[%d]. \n", i);
+			collCounter++;
 		}
 
 		// Z axis check
 		if((minMaxPlayerZ[0] <= minMaxZ[1]) && (minMaxPlayerZ[1] >= minMaxZ[0]))
 		{
-			printf("Z collission on cube[%d]. \n", i);
+			// printf("Z collission on cube[%d]. \n", i);
+			collCounter++;
+		}
+
+		if(collCounter == 3)
+		{
+			cubes[i].isDead = true;
+			break;
 		}
 	}
-	printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n");
+	// printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n");
 }
 
 // void draw(float a[8][3])
@@ -183,9 +194,12 @@ void checkCollission()
 void init()
 {
 	glClearColor(0.0, 0.0, 0.0, 1.0); //set backgrond color to black
-    //glClearColor(1.0,1.0,1.0,1.0); //set backgrond color to white
-	glOrtho(-454.0,454.0,-250.0,250.0,-250.0,250.0);
-	// Set the no. of Co-ordinates along X & Y axes and their gappings
+    //glClearColor(1.0,1.0,1.0,1.0);    //set backgrond color to white
+	glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+	glOrtho(-454.0,454.0,-250.0,250.0,-250.0,250.0);	// Set the no. of Co-ordinates along X & Y axes and their gappings
+
+	glMatrixMode(GL_MODELVIEW);
 	glEnable(GL_DEPTH_TEST);
 	// To Render the surfaces Properly according to their depths
 }
@@ -281,6 +295,7 @@ void display()
 		// 	printf("\n");
 		// }
 		// printf("~~~~~~~~~~~~~~~\n");
+		
     }
 
     // draw all cubes
@@ -289,6 +304,16 @@ void display()
     cubes[2].drawCube();
     cubes[3].drawCube();
 
+	if(angleX != 0.0f)
+	{
+		glRotatef(angleX, 1.0f, 0.0f, 0.0f);
+		angleX = 0.0f;
+	}
+	if(angleY != 0.0f)
+	{
+		glRotatef(angleY, 0.0f, 1.0f, 0.0f);
+		angleY = 0.0f;
+	}
     deltaX=0;
     deltaY=0;
 
@@ -304,7 +329,28 @@ void display()
 
 int keyUpPressed = 0;
 
-void processSpecialKeys(unsigned char key, int x, int y)
+void processSpecialKeys(int key, int x, int y)
+{
+	switch(key)
+	{
+		case GLUT_KEY_UP:
+			angleX+=5.0f;
+			break;
+		case GLUT_KEY_DOWN:
+			angleX-=5.0f;
+			break;
+		case GLUT_KEY_LEFT:
+			angleY+=5.0f;
+			break;
+		case GLUT_KEY_RIGHT:
+			angleY-=5.0f;
+			break;
+	}
+
+	glutPostRedisplay();
+}
+
+void processKeys(unsigned char key, int x, int y)
 {
     switch (key){
 		case 'w':
@@ -329,7 +375,7 @@ void processSpecialKeys(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
-void releaseSpecialKeys(unsigned char key, int x, int y)
+void releaseKeys(unsigned char key, int x, int y)
 {
     switch (key){
 		case 'w':
@@ -367,11 +413,11 @@ int main( int argc, char* args[] )
 	glutInitWindowPosition(0,0);
 	glutCreateWindow("3D TRANSFORMATIONS");
 	init();
-glutDisplayFunc(display);
+	glutDisplayFunc(display);
     // handling for pressing and releasing a key
-    glutKeyboardFunc(processSpecialKeys);
-    glutKeyboardUpFunc(releaseSpecialKeys);
-    // glutSpecialFunc(processSpecialKeys);
+    glutKeyboardFunc(processKeys);
+    glutKeyboardUpFunc(releaseKeys);
+    glutSpecialFunc(processSpecialKeys);		// special processing for arrow keys
     // glutSpecialUpFunc(releaseSpecialKeys);
 	
 	

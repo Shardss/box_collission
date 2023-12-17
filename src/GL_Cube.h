@@ -18,21 +18,33 @@ class GL_Cube
     public:
         void reposition(float x, float y, float z);
         void drawCube();
+
         int* getMinMaxX();
         int* getMinMaxY();
         int* getMinMaxZ();
         GLfloat cube[8][3]=
         {
-        {10,10,-50}, {60,10,-50}, {60,60,-50}, {10,60,-50},    // back face
+        {10,0,-50},  {60,0,-50},  {60,50,-50}, {10,50,-50},    // back face
         {0,0,0},     {50,0,0},    {50,50,0},   { 0,50,0}       // front face
         };
+
+        bool isDead=false;
     private:
         GLfloat color[6][3] = {
             {1.0, 1.0, 0.0},
-            {1.0, 0.0, 0.0},
-            {0.0, 0.0, 0.0},
+            {1.0, 0.0, 1.0},
+            {0.0, 0.0, 1.0},
             {0.0, 1.0, 0.0},
             {0.0, 1.0, 1.0},
+            {1.0, 0.0, 0.0},
+        };
+
+        GLfloat colorDead[6][3] = {
+            {1.0, 0.0, 0.0},
+            {1.0, 0.0, 0.0},
+            {1.0, 0.0, 0.0},
+            {1.0, 0.0, 0.0},
+            {1.0, 0.0, 0.0},
             {1.0, 0.0, 0.0},
         };
 

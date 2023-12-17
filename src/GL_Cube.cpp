@@ -38,6 +38,20 @@ void GL_Cube::reposition(float x, float y, float z)
 
 void GL_Cube::drawCube()
 {
+    GLfloat colorBuff[6][3];
+
+    for ( int i = 0; i < 6; i ++ )
+    {
+        for ( int j = 0; j < 3; j ++ )
+        {
+            if(!isDead)
+                {colorBuff[i][j] = color[i][j];}
+            else
+                {colorBuff[i][j] = colorDead[i][j];}
+        }   
+    }
+    
+
     glBegin(GL_QUADS);
 
 #ifdef SHADED_CUBE
@@ -95,32 +109,32 @@ void GL_Cube::drawCube()
     glColor3fv(color[7]);
     glVertex3fv(cube[7]);
 #else /* flat cube */
-	glColor3f(color[0][0], color[0][1], color[0][2]); //behind
+	glColor3f(colorBuff[0][0], colorBuff[0][1], colorBuff[0][2]); //behind
 	glVertex3fv(cube[0]);
 	glVertex3fv(cube[1]);
 	glVertex3fv(cube[2]);
 	glVertex3fv(cube[3]);
-	glColor3f(color[1][0], color[1][1], color[1][2]); //bottom
+	glColor3f(colorBuff[1][0], colorBuff[1][1], colorBuff[1][2]); //bottom
 	glVertex3fv(cube[0]);
 	glVertex3fv(cube[1]);
 	glVertex3fv(cube[5]);
 	glVertex3fv(cube[4]);
-	glColor3f(color[2][0], color[2][1], color[2][2]); //left
+	glColor3f(colorBuff[2][0], colorBuff[2][1], colorBuff[2][2]); //left
 	glVertex3fv(cube[0]);
 	glVertex3fv(cube[4]);
 	glVertex3fv(cube[7]);
 	glVertex3fv(cube[3]);
-	glColor3f(color[3][0], color[3][1], color[3][2]); //right
+	glColor3f(colorBuff[3][0], colorBuff[3][1], colorBuff[3][2]); //right
 	glVertex3fv(cube[1]);
 	glVertex3fv(cube[2]);
 	glVertex3fv(cube[6]);
 	glVertex3fv(cube[5]);
-	glColor3f(color[4][0], color[4][1], color[4][2]); //up
+	glColor3f(colorBuff[4][0], colorBuff[4][1], colorBuff[4][2]); //up
 	glVertex3fv(cube[2]);
 	glVertex3fv(cube[3]);
 	glVertex3fv(cube[7]);
 	glVertex3fv(cube[6]);
-	glColor3f(color[5][0], color[5][1], color[5][2]); // front
+	glColor3f(colorBuff[5][0], colorBuff[5][1], colorBuff[5][2]); // front
 	glVertex3fv(cube[4]);
 	glVertex3fv(cube[5]);
 	glVertex3fv(cube[6]);
