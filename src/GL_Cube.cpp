@@ -2,11 +2,21 @@
 
 void GL_Cube::reposition(float x, float y, float z)
 {
+    // reset since they're obsolete at this point
+    minMaxX[0] =  32767;
+    minMaxX[1] = -32767;
+    minMaxY[0] =  32767;
+    minMaxY[1] = -32767;
+    minMaxZ[0] =  32767;
+    minMaxZ[1] = -32767;
+
     for(int i=0;i<8;i++)
 	{
+        // printf("cube before %.2f \n", cube[i][0]);
 		cube[i][0] += x;
 		cube[i][1] += y;
 		cube[i][2] += z;
+        // printf("cube after %.2f \n", cube[i][0]);
 
         if(cube[i][0] < minMaxX[0])
             {minMaxX[0] = cube[i][0];}
@@ -14,15 +24,16 @@ void GL_Cube::reposition(float x, float y, float z)
             {minMaxX[1] = cube[i][0];}
 
         if(cube[i][1] < minMaxY[0])
-            {minMaxY[0] = cube[i][0];}
+            {minMaxY[0] = cube[i][1];}
         if(cube[i][1] > minMaxY[1])
-            {minMaxY[1] = cube[i][0];}
+            {minMaxY[1] = cube[i][1];}
 
         if(cube[i][2] < minMaxZ[0])
             {minMaxZ[0] = cube[i][2];}
         if(cube[i][2] > minMaxZ[1])
             {minMaxZ[1] = cube[i][2];}
 	}
+    // printf("~~~~~~~~~~~~~~~\n");
 }
 
 void GL_Cube::drawCube()
@@ -115,7 +126,7 @@ void GL_Cube::drawCube()
 	glVertex3fv(cube[6]);
 	glVertex3fv(cube[7]);
 #endif /* SHADED_CUBE */
-glEnd();
+    glEnd();
 }
 
 int* GL_Cube::getMinMaxX()
