@@ -68,11 +68,11 @@ void init()
     //glClearColor(1.0,1.0,1.0,1.0);    //set backgrond color to white
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-	glOrtho(-454.0,454.0,-250.0,250.0,-250.0,250.0);	// Set the no. of Co-ordinates along X & Y axes and their gappings
+	glOrtho(-454.0,454.0, -250.0,250.0, -250.0,250.0);	// Set the no. of Co-ordinates along X & Y axes and their gappings
 
 	glMatrixMode(GL_MODELVIEW);
-	glEnable(GL_DEPTH_TEST);
 	// To Render the surfaces Properly according to their depths
+	glEnable(GL_DEPTH_TEST);
 }
 
 void display()
@@ -80,7 +80,7 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glColor3f(1.0,0.0,0.0);
     
-    // middle cube
+    // middle cube (the player)
     cubes[0].reposition(deltaX, deltaY, 0);
 
     if(firstPositioning)
@@ -95,24 +95,21 @@ void display()
         firstPositioning = false;
     }
 
-    // draw all cubes
+	if(angleX != 0.0f)
+		{glRotatef(angleX, 1.0f, 0.0f, 0.0f);}
+	if(angleY != 0.0f)
+		{glRotatef(angleY, 0.0f, 1.0f, 0.0f);}
+
+	// draw all cubes
     cubes[0].drawCube();
     cubes[1].drawCube();
     cubes[2].drawCube();
     cubes[3].drawCube();
 
-	if(angleX != 0.0f)
-	{
-		glRotatef(angleX, 1.0f, 0.0f, 0.0f);
-		angleX = 0.0f;
-	}
-	if(angleY != 0.0f)
-	{
-		glRotatef(angleY, 0.0f, 1.0f, 0.0f);
-		angleY = 0.0f;
-	}
     deltaX=0;
     deltaY=0;
+	angleX = 0.0f;
+	angleY = 0.0f;
 
     checkCollission();
 	
@@ -197,7 +194,7 @@ int main( int argc, char* args[] )
 	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB|GLUT_DEPTH);
 	glutInitWindowSize(1280,720);
 	glutInitWindowPosition(0,0);
-	glutCreateWindow("3D TRANSFORMATIONS");
+	glutCreateWindow("Box collision");
 	init();
 	glutDisplayFunc(display);
 

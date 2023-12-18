@@ -10,7 +10,7 @@
 #include <SDL2/SDL_opengl.h>
 #include <GL/glut.h>
 
-#define SHADED_CUBE
+// #define SHADED_CUBE
 
 using namespace std;
 
