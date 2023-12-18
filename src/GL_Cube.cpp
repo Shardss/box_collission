@@ -12,11 +12,9 @@ void GL_Cube::reposition(float x, float y, float z)
 
     for(int i=0;i<8;i++)
 	{
-        // printf("cube before %.2f \n", cube[i][0]);
 		cube[i][0] += x;
 		cube[i][1] += y;
 		cube[i][2] += z;
-        // printf("cube after %.2f \n", cube[i][0]);
 
         if(cube[i][0] < minMaxX[0])
             {minMaxX[0] = cube[i][0];}
@@ -33,80 +31,65 @@ void GL_Cube::reposition(float x, float y, float z)
         if(cube[i][2] > minMaxZ[1])
             {minMaxZ[1] = cube[i][2];}
 	}
-    // printf("~~~~~~~~~~~~~~~\n");
 }
 
 void GL_Cube::drawCube()
 {
-    GLfloat colorBuff[6][3];
-
-    for ( int i = 0; i < 6; i ++ )
-    {
-        for ( int j = 0; j < 3; j ++ )
-        {
-            if(!isDead)
-                {colorBuff[i][j] = color[i][j];}
-            else
-                {colorBuff[i][j] = colorDead[i][j];}
-        }   
-    }
-    
-
     glBegin(GL_QUADS);
 
 #ifdef SHADED_CUBE
-    glColor3fv(color[0]);
+    glColor3fv(colorBuff[0]);
     glVertex3fv(cube[0]);
-    glColor3fv(color[1]);
+    glColor3fv(colorBuff[1]);
     glVertex3fv(cube[1]);
-    glColor3fv(color[2]);
+    glColor3fv(colorBuff[2]);
     glVertex3fv(cube[2]);
-    glColor3fv(color[3]);
+    glColor3fv(colorBuff[3]);
     glVertex3fv(cube[3]);
    
-    glColor3fv(color[3]);
-    glVertex3fv(cube[3]);
-    glColor3fv(color[4]);
+    glColor3fv(colorBuff[3]);
+    glVertex3fv(cube[0]);
+    glColor3fv(colorBuff[4]);
+    glVertex3fv(cube[1]);
+    glColor3fv(colorBuff[5]);
+    glVertex3fv(cube[5]);
+    glColor3fv(colorBuff[2]);
     glVertex3fv(cube[4]);
-    glColor3fv(color[7]);
+   
+    glColor3fv(colorBuff[0]);
+    glVertex3fv(cube[0]);
+    glColor3fv(colorBuff[5]);
+    glVertex3fv(cube[4]);
+    glColor3fv(colorBuff[4]);
     glVertex3fv(cube[7]);
-    glColor3fv(color[2]);
-    glVertex3fv(cube[2]);
-   
-    glColor3fv(color[0]);
-    glVertex3fv(cube[0]);
-    glColor3fv(color[5]);
-    glVertex3fv(cube[5]);
-    glColor3fv(color[6]);
-    glVertex3fv(cube[6]);
-    glColor3fv(color[1]);
-    glVertex3fv(cube[1]);
-   
-    glColor3fv(color[5]);
-    glVertex3fv(cube[5]);
-    glColor3fv(color[4]);
-    glVertex3fv(cube[4]);
-    glColor3fv(color[7]);
-    glVertex3fv(cube[7]);
-    glColor3fv(color[6]);
-    glVertex3fv(cube[6]);
-   
-    glColor3fv(color[5]);
-    glVertex3fv(cube[5]);
-    glColor3fv(color[0]);
-    glVertex3fv(cube[0]);
-    glColor3fv(color[3]);
+    glColor3fv(colorBuff[1]);
     glVertex3fv(cube[3]);
-    glColor3fv(color[4]);
-    glVertex3fv(cube[4]);
    
-    glColor3fv(color[6]);
-    glVertex3fv(cube[6]);
-    glColor3fv(color[1]);
+    glColor3fv(colorBuff[5]);
     glVertex3fv(cube[1]);
-    glColor3fv(color[2]);
+    glColor3fv(colorBuff[4]);
     glVertex3fv(cube[2]);
-    glColor3fv(color[7]);
+    glColor3fv(colorBuff[5]);
+    glVertex3fv(cube[6]);
+    glColor3fv(colorBuff[4]);
+    glVertex3fv(cube[5]);
+   
+    glColor3fv(colorBuff[5]);
+    glVertex3fv(cube[2]);
+    glColor3fv(colorBuff[0]);
+    glVertex3fv(cube[3]);
+    glColor3fv(colorBuff[3]);
+    glVertex3fv(cube[7]);
+    glColor3fv(colorBuff[4]);
+    glVertex3fv(cube[6]);
+   
+    glColor3fv(colorBuff[4]);
+    glVertex3fv(cube[4]);
+    glColor3fv(colorBuff[1]);
+    glVertex3fv(cube[5]);
+    glColor3fv(colorBuff[2]);
+    glVertex3fv(cube[6]);
+    glColor3fv(colorBuff[5]);
     glVertex3fv(cube[7]);
 #else /* flat cube */
 	glColor3f(colorBuff[0][0], colorBuff[0][1], colorBuff[0][2]); //behind
@@ -141,6 +124,20 @@ void GL_Cube::drawCube()
 	glVertex3fv(cube[7]);
 #endif /* SHADED_CUBE */
     glEnd();
+}
+
+void GL_Cube::hasDied(bool isDead)
+{
+    for ( int i = 0; i < 6; i ++ )
+    {
+        for ( int j = 0; j < 3; j ++ )
+        {
+            if(!isDead)
+                {colorBuff[i][j] = color[i][j];}
+            else
+                {colorBuff[i][j] = colorDead[i][j];}
+        }   
+    }
 }
 
 int* GL_Cube::getMinMaxX()
